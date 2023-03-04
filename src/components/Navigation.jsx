@@ -51,7 +51,7 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="flex items-center justify-between p-4 w-full absolute z-10">
+    <nav className="flex items-center justify-between p-4 w-full absolute z-20">
       <h1 className="text-4xl text-mainCol cursor-pointer font-bold flex">
         <Link to="/">ScreenSleuth</Link>{' '}
         <span>
@@ -69,7 +69,7 @@ export default function Navigation() {
           <img className="w-[40px]" src={close} />
         )}
       </button>
-      <div className="navigation__list absolute z-30 bg-black h-screen right-0 left-0 top-[-100rem] sm:h-auto sm:bg-transparent sm:relative sm:top-0 sm:flex flex-col items-end justify-center gap-1">
+      <div className="navigation__list absolute z-30 bg-black h-screen right-0 left-0 top-[-100rem] sm:top-0  sm:h-auto sm:bg-transparent sm:relative flex flex-col sm:items-end sm:justify-center gap-2">
         <div>
           {rootLocation === '/' ? (
             ''
@@ -110,7 +110,7 @@ export default function Navigation() {
             </>
           )}
         </div>
-        <form onSubmit={handleQuery}>
+        <form className="navigation_form" onSubmit={handleQuery}>
           {' '}
           <input
             className="px-6 py-2 rounded bg-mainCol cursor-pointer hover:scale-90 ease-in-out duration-300"
