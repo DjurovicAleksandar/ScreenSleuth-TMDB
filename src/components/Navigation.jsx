@@ -3,7 +3,8 @@ import { useState, useRef } from 'react';
 import { SEARCH } from '../config/data';
 import { BiHomeAlt } from 'react-icons/bi';
 import { UserAuth } from '../config/context/AuthContext';
-import { auth } from '../config/firebase';
+import menu from '../assets/menu.png';
+import close from '../assets/close.png';
 
 export default function Navigation() {
   const { user, logOut } = UserAuth();
@@ -11,6 +12,16 @@ export default function Navigation() {
   const inputRef = useRef(null);
   const [query, setQuery] = useState('');
   const rootLocation = useLocation().pathname;
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenu = e => {
+    const btn = e.target;
+    console.log(document.querySelector('.navigation__list'));
+    document.querySelector('.navigation__list')?.classList.toggle('open');
+
+    if (!menuOpen) setMenuOpen(true);
+    else setMenuOpen(false);
+  };
 
   const handleLogout = async () => {
     try {
@@ -27,8 +38,16 @@ export default function Navigation() {
 
     navigate('/searchresults', { state: { url: fetchUrl } });
 
+    document.querySelector('.navigation__list')?.classList.remove('open');
+    setMenuOpen(false);
+
     //Clearing query
     setQuery('');
+  };
+
+  window.onscroll = () => {
+    document.querySelector('.navigation__list')?.classList.remove('open');
+    setMenuOpen(false);
   };
 
   return (
@@ -40,7 +59,17 @@ export default function Navigation() {
           <BiHomeAlt name="Home" size={20} />
         </span>
       </h1>
-      <div className="hidden sm:flex flex-col items-end justify-center gap-1">
+      <button
+        onClick={handleMenu}
+        className="sm:hidden block active:scale-90 z-40"
+      >
+        {!menuOpen ? (
+          <img className="w-[40px]" src={menu} />
+        ) : (
+          <img className="w-[40px]" src={close} />
+        )}
+      </button>
+      <div className="navigation__list absolute z-30 bg-black h-screen right-0 left-0 top-[-100rem] sm:h-auto sm:bg-transparent sm:relative sm:top-0 sm:flex flex-col items-end justify-center gap-1">
         <div>
           {rootLocation === '/' ? (
             ''

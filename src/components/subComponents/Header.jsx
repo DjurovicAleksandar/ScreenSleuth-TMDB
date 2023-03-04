@@ -36,7 +36,6 @@ function Header({ movie }) {
 
   useEffect(() => {
     getFromWatchlist();
-    console.log(userWatchlist);
   }, []);
   return (
     <>

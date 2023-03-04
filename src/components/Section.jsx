@@ -149,7 +149,7 @@ function Section({ fetchUrl }) {
             </h1>
 
             <div>
-              {movieBookmarked.length === 1 ? (
+              {movieBookmarked?.length === 1 ? (
                 <Link
                   to="/watchlist"
                   className="text-xs md:text-sm lg:text-lg   px-4 py-1 bg-mainCol border border-transparent mr-4 cursor-pointer hover:scale-90 ease-in-out duration-300"
