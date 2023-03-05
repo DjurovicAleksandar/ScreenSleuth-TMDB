@@ -16,6 +16,7 @@ import { addToWatchlist } from '../config/saveMovie';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Link } from 'react-router-dom';
+import { async } from '@firebase/util';
 
 function Section({ fetchUrl }) {
   const { user } = UserAuth();
@@ -23,15 +24,16 @@ function Section({ fetchUrl }) {
   const movieRef = doc(db, 'users', `${user?.email}`);
   const [bookmark, setBookmark] = useState(false);
 
-  //Pages
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pages, setPages] = useState([]);
+  //Setting a ref for a scrolling a carousel
+  const scrollCon = useRef(null);
+
+  //totalResult
+  const [pageNumber, setPageNumber] = useState(2);
+  const [totalPages, setTotalPages] = useState(0);
   //Settin an error
   const [error, setError] = useState('');
   //Setting a index for a heading movie
   const [index, setIndex] = useState(0);
-  //Setting a ref for a scrolling a carousel
-  const scrollCon = useRef(null);
   //Setting a state for a movie array
   const [movies, setMovies] = useState([]);
   //Dynamically changing a movie index
@@ -76,10 +78,6 @@ function Section({ fetchUrl }) {
   const scrollHandler = scroll => {
     if (scroll > 0 && index < movies.length - 1) {
       setIndex(index + 1);
-      if (index >= movies.length - 2) {
-        if (currentPage >= pages - 1) return;
-        setCurrentPage(prev => (prev += 1));
-      }
     }
     if (scroll < 0 && index > 0) {
       setIndex(index - 1);
@@ -90,16 +88,12 @@ function Section({ fetchUrl }) {
 
   const handleClick = i => {
     setIndex(i);
-    if (index >= movies.length - 2) {
-      if (currentPage >= pages - 1) return;
-      setCurrentPage(prev => (prev += 1));
-    }
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(fetchUrl + moviePage(currentPage));
+        const res = await fetch(fetchUrl + moviePage());
         const data = await res.json();
         if (!res.ok)
           throw new Error(`something went wrong. Code error: ${res.status}`);
@@ -107,35 +101,24 @@ function Section({ fetchUrl }) {
         if (data.results <= 0)
           setError(`something went wrong. Code error: ${res.status}`);
 
-        setMovies(prevMovie => [...prevMovie, ...data.results]);
-      } catch (err) {
-        console.error(err);
-        setError(err);
-      }
-    })();
-  }, [currentPage]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(fetchUrl);
-        const data = await res.json();
-        if (!res.ok)
-          throw new Error(`something went wrong. Code error: ${res.status}`);
-
-        if (data.results <= 0)
-          setError(`something went wrong. Code error: ${res.status}`);
-
-        setPages(data.total_pages);
+        setTotalPages(data.total_pages);
         setMovies(data.results);
-
         getFromWatchlist();
       } catch (err) {
         console.error(err);
         setError(err);
       }
     })();
-  }, [fetchUrl]);
+  }, []);
+
+  const loadMoreMovies = async () => {
+    const response = await fetch(`${fetchUrl}&page=${pageNumber}`);
+    const data = await response.json();
+
+    setMovies(prev => [...prev, ...data.results]);
+
+    setPageNumber(prev => prev + 1);
+  };
 
   return (
     <>
@@ -198,6 +181,12 @@ function Section({ fetchUrl }) {
             </p>
 
             <div className="relative">
+              <button
+                onClick={loadMoreMovies}
+                className="text-white absolute top-8 right-1 text-xs"
+              >
+                Load more
+              </button>
               <div
                 className=" flex items-center justify-start gap-x-4 overflow-x-auto scrollbar-hide h-[200px] lg:h-[250px] p-8 lg:pl-20"
                 ref={scrollCon}
@@ -213,20 +202,22 @@ function Section({ fetchUrl }) {
                   );
                 })}
               </div>
-              <div className="text-white absolute right-0 top-[20%] h-[100px] lg:h-[150px] w-[5%] flex flex-col items-center justify-center gap-4 bg-gradient-to-l from-black">
+              <div
+                onClick={() => scrollHandler(screen.width <= 600 ? 85 : 120)}
+                className="group cursor-pointer text-white absolute right-0 top-[20%] h-[100px] lg:h-[150px] w-[5%] flex flex-col items-center justify-center gap-4 bg-gradient-to-l from-black"
+              >
                 <RxDoubleArrowRight
-                  onClick={() => scrollHandler(screen.width <= 600 ? 85 : 120)}
                   size={30}
-                  className="cursor-pointer scroll-smooth hover:scale-90 text-white "
+                  className="scroll-smooth group-hover:scale-90 text-white  "
                 />{' '}
               </div>
-              <div className="text-white absolute left-0 top-[20%] h-[100px] lg:h-[150px] w-[5%] flex flex-col items-center justify-center gap-4 bg-gradient-to-l from-black">
+              <div
+                onClick={() => scrollHandler(screen.width <= 600 ? -85 : -120)}
+                className="group cursor-pointer text-white absolute left-0 top-[20%] h-[100px] lg:h-[150px] w-[5%] flex flex-col items-center justify-center gap-4 bg-gradient-to-l from-black"
+              >
                 <RxDoubleArrowLeft
-                  onClick={() =>
-                    scrollHandler(screen.width <= 600 ? -85 : -120)
-                  }
                   size={30}
-                  className="cursor-pointer scroll-smooth hover:scale-90 text-white"
+                  className="cursor-pointer scroll-smooth group-hover:scale-90 text-white"
                 />
               </div>
             </div>

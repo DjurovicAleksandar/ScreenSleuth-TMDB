@@ -47,7 +47,7 @@ function Footer() {
     });
   };
 
-  const qucikLink = [['Home', ''], ...sign, ['Watchlist', '/watchlist']];
+  const qucikLink = [['Home', ''], ...sign];
 
   return (
     <footer className=" text-mainCol text-[10px] md:text-xs lg:text-sm p-6 flex flex-col justify-center mt-32 border-[1px] border-transparent border-t-mainCol">
