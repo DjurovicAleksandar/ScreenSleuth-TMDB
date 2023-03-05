@@ -45,7 +45,7 @@ export default function Navigation() {
     setQuery('');
   };
 
-  window.onscroll = () => {
+  const handleNavOpen = () => {
     document.querySelector('.navigation__list')?.classList.remove('open');
     setMenuOpen(false);
   };
@@ -75,7 +75,10 @@ export default function Navigation() {
             ''
           ) : (
             <Link to="/">
-              <button className='hover:scale-90 ease-in-out duration-300 rounded text-mainCol px-6 py-2 cursor-pointer"'>
+              <button
+                onClick={handleNavOpen}
+                className='hover:scale-90 ease-in-out duration-300 rounded text-mainCol px-6 py-2 cursor-pointer"'
+              >
                 Home
               </button>
             </Link>
@@ -83,7 +86,10 @@ export default function Navigation() {
           {user?.email ? (
             <>
               <Link to="/watchlist">
-                <button className="hover:scale-90 ease-in-out duration-300 rounded text-mainCol px-6 py-2 cursor-pointer">
+                <button
+                  onClick={handleNavOpen}
+                  className="hover:scale-90 ease-in-out duration-300 rounded text-mainCol px-6 py-2 cursor-pointer"
+                >
                   Watchlist
                 </button>
               </Link>
@@ -98,12 +104,18 @@ export default function Navigation() {
           ) : (
             <>
               <Link to="/signIn">
-                <button className="hover:scale-90 ease-in-out duration-300 rounded text-mainCol px-6 py-2 cursor-pointer">
+                <button
+                  onClick={handleNavOpen}
+                  className="hover:scale-90 ease-in-out duration-300 rounded text-mainCol px-6 py-2 cursor-pointer"
+                >
                   Sign in
                 </button>
               </Link>
               <Link to="/signUp">
-                <button className="hover:scale-90 ease-in-out duration-300 rounded ml-4 text-gray bg-mainCol px-6 py-2 cursor-pointer">
+                <button
+                  onClick={handleNavOpen}
+                  className="hover:scale-90 ease-in-out duration-300 rounded ml-4 text-gray bg-mainCol px-6 py-2 cursor-pointer"
+                >
                   Sign up
                 </button>
               </Link>
