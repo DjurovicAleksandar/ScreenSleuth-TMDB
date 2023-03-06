@@ -54,7 +54,7 @@ function Footer() {
       <div className="flex items-start justify-around">
         {' '}
         <div className="w-1/2 ">
-          <h2 className="font-semibold mb-2 underline text-red-200">About</h2>
+          <h2 className="font-semibold mb-2 underline text-blue-200">About</h2>
           <p className="lg:w-[510px]">
             ScreenSleuth is a comprehensive movie database powered by TMDB API.
             Explore a vast collection of films and TV shows, with in-depth
