@@ -15,11 +15,13 @@ import { UserAuth } from '../config/context/AuthContext';
 import { addToWatchlist } from '../config/saveMovie';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import { Link, useNavigate, generatePath } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 function Section({ fetchUrl }) {
   const navigate = useNavigate();
+  const rootLocation = useLocation().pathname;
 
+  console.log(rootLocation);
   const { user } = UserAuth();
   const [userWatchlist, setUserWatchlist] = useState([]);
   const movieRef = doc(db, 'users', `${user?.email}`);
@@ -90,10 +92,8 @@ function Section({ fetchUrl }) {
   const handleClick = i => {
     setIndex(i);
 
-    // const path = generatePath('/trending/:movieId', {
-    //   movieId: movie.id,
-    // });
-    const path = `/trending#${movie.id}`;
+    const path = `${rootLocation}#${movie.id}`;
+    console.log(path);
 
     navigate(path);
   };
