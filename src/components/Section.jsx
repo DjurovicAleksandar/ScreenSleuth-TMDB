@@ -20,8 +20,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 function Section({ fetchUrl }) {
   const navigate = useNavigate();
   const rootLocation = useLocation().pathname;
+  const { hash } = useLocation();
 
-  console.log(rootLocation);
   const { user } = UserAuth();
   const [userWatchlist, setUserWatchlist] = useState([]);
   const movieRef = doc(db, 'users', `${user?.email}`);
@@ -40,7 +40,7 @@ function Section({ fetchUrl }) {
   //Setting a state for a movie array
   const [movies, setMovies] = useState([]);
   //Dynamically changing a movie index
-  const movie = movies[index];
+  const [movie, setMovie] = useState();
   //Movie title
   const movieTitle = movie?.title
     ? movie.title
@@ -49,7 +49,7 @@ function Section({ fetchUrl }) {
     : movie?.original_title;
 
   //button text handle
-  let movieBookmarked = userWatchlist?.filter(item => item.id == movie.id);
+  let movieBookmarked = userWatchlist?.filter(item => item.id == movie?.id);
 
   // database snamshot
   const getFromWatchlist = () => {
@@ -91,11 +91,18 @@ function Section({ fetchUrl }) {
 
   const handleClick = i => {
     setIndex(i);
-
+    setMovie(movies[index]);
     const path = `${rootLocation}#${movie.id}`;
-    console.log(path);
-
     navigate(path);
+  };
+
+  const loadMoreMovies = async () => {
+    const response = await fetch(`${fetchUrl}&page=${pageNumber}`);
+    const data = await response.json();
+
+    setMovies(prev => [...prev, ...data.results]);
+
+    setPageNumber(prev => prev + 1);
   };
 
   useEffect(() => {
@@ -119,14 +126,16 @@ function Section({ fetchUrl }) {
     })();
   }, []);
 
-  const loadMoreMovies = async () => {
-    const response = await fetch(`${fetchUrl}&page=${pageNumber}`);
-    const data = await response.json();
+  useEffect(() => {
+    if (hash.length < 2) {
+      setMovie(movies[index]);
+    } else {
+      const hashIndex = hash.slice(1);
+      const indexOfMovie = movies.findIndex(e => e.id == hashIndex);
 
-    setMovies(prev => [...prev, ...data.results]);
-
-    setPageNumber(prev => prev + 1);
-  };
+      setMovie(movies[indexOfMovie]);
+    }
+  }, [movies]);
 
   return (
     <>

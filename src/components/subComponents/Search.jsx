@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 function Search() {
   const location = useLocation();
-  const fetchUrl = location.state.url;
+  const fetchUrl = location.state?.url;
 
   return <Section fetchUrl={fetchUrl} />;
 }
