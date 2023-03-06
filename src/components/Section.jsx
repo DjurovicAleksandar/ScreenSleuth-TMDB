@@ -40,7 +40,7 @@ function Section({ fetchUrl }) {
   //Setting a state for a movie array
   const [movies, setMovies] = useState([]);
   //Dynamically changing a movie index
-  const [movie, setMovie] = useState();
+  const movie = movies[index];
   //Movie title
   const movieTitle = movie?.title
     ? movie.title
@@ -49,7 +49,7 @@ function Section({ fetchUrl }) {
     : movie?.original_title;
 
   //button text handle
-  let movieBookmarked = userWatchlist?.filter(item => item.id == movie?.id);
+  let movieBookmarked = userWatchlist?.filter(item => item.id == movie.id);
 
   // database snamshot
   const getFromWatchlist = () => {
@@ -91,9 +91,6 @@ function Section({ fetchUrl }) {
 
   const handleClick = i => {
     setIndex(i);
-    setMovie(movies[index]);
-    const path = `${rootLocation}#${movie.id}`;
-    navigate(path);
   };
 
   const loadMoreMovies = async () => {
@@ -110,6 +107,7 @@ function Section({ fetchUrl }) {
       try {
         const res = await fetch(fetchUrl + moviePage());
         const data = await res.json();
+
         if (!res.ok)
           throw new Error(`something went wrong. Code error: ${res.status}`);
 
@@ -127,15 +125,20 @@ function Section({ fetchUrl }) {
   }, []);
 
   useEffect(() => {
-    if (hash.length < 2) {
-      setMovie(movies[index]);
-    } else {
-      const hashIndex = hash.slice(1);
-      const indexOfMovie = movies.findIndex(e => e.id == hashIndex);
+    const path = `${rootLocation}#${movie?.id}`;
+    navigate(path);
+    console.log(path);
+  }, [movie]);
 
-      setMovie(movies[indexOfMovie]);
-    }
-  }, [movies]);
+  // useEffect(() => {
+  //   // const hashIndex = hash.slice(1);
+  //   // const newMovie = movies.filter(movie => movie.id == hashIndex);
+  //   // const indexOfMovie=movies.indexOf
+  //   // console.log(newMovie);
+
+  //   const path = `${rootLocation}#${movie?.id}`;
+  //   navigate(path);
+  // }, [index]);
 
   return (
     <>
