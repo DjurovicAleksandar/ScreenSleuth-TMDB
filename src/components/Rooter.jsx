@@ -34,12 +34,12 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
       <Route index element={<Home />} />
-      <Route path="/favourites" element={<Favourites />} />
-      <Route path="/latest" element={<Latest />} />
-      <Route path="/greatestofalltime" element={<GOAT />} />
-      <Route path="/trending" element={<Trending />} />
-      <Route path="/upcoming" element={<Upcoming />} />
-      <Route path="/searchresults" element={<Search />} />
+      <Route path="/favourites/" element={<Favourites />} />
+      <Route path="/latest/" element={<Latest />} />
+      <Route path="/greatestofalltime/" element={<GOAT />} />
+      <Route path="/trending/" element={<Trending />} />
+      <Route path="/upcoming/" element={<Upcoming />} />
+      <Route path="/searchresults/:searchQuery" element={<Search />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
       <Route

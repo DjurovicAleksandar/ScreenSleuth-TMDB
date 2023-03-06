@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, generatePath } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { SEARCH } from '../config/data';
 import { BiHomeAlt } from 'react-icons/bi';
@@ -15,8 +15,6 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleMenu = e => {
-    const btn = e.target;
-    console.log(document.querySelector('.navigation__list'));
     document.querySelector('.navigation__list')?.classList.toggle('open');
 
     if (!menuOpen) setMenuOpen(true);
@@ -35,8 +33,11 @@ export default function Navigation() {
   const handleQuery = e => {
     e.preventDefault();
     const fetchUrl = SEARCH(query);
+    const path = generatePath('/searchresults/:searchQuery', {
+      searchQuery: query,
+    });
 
-    navigate('/searchresults', { state: { url: fetchUrl } });
+    navigate(path, { state: { url: fetchUrl } });
 
     document.querySelector('.navigation__list')?.classList.remove('open');
     setMenuOpen(false);

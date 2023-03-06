@@ -1,13 +1,12 @@
 {
   "hosting": {
     "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "https://screensleuth-dbb21.web.app/trending",
-        "destination": "https://screensleuth-dbb21.web.app",
-        "type": 301
+        "source": "**",
+        "destination": "/index.html"
       }
-    ]
+    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   }
 }
