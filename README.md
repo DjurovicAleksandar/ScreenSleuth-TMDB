@@ -36,7 +36,7 @@ Besides that, I also created a added list of movies on home page, based on their
 
 Then, I created a separate component for the search results and added it to the home page. When a user searches for a movie, the search results component fetches the search results from the TMDB API and displays them.
 
-I added functionality to allow users to add movies to a watchlist and created a watchlist component to display the user's saved movies.
+I added functionality to allow users to add movies to a watchlist and created a watchlist component to display the user's saved movies, using a firebase firestore as database.
 
 Finally, I added some finishing touches to the application by implementing responsive design to ensure the application looked great on all devices. I also added some animations to make the application more interactive and engaging.
 
@@ -44,6 +44,8 @@ Finally, I added some finishing touches to the application by implementing respo
 
 - ReacJS
 - Tailwind css
+- Firebase
+- Firebase firestore
 - Vite
 - TMDB Api
 - Youtube trailer API
@@ -51,7 +53,7 @@ Finally, I added some finishing touches to the application by implementing respo
 
 ### What I learned
 
-Throughout the development process, I learned a lot about working with APIs, using the React Context API to manage state, and implementing responsive design with Tailwind. I also gained experience in using Vite as a build tool for React projects.
+Throughout the development process, I learned a lot about working with APIs, using the React Context API to manage state, using Firebase Firestore, and implementing responsive design with Tailwind. I also gained experience in using Vite as a build tool for React projects.
 
 ## Author
 
